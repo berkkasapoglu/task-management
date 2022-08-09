@@ -1,0 +1,45 @@
+.columns {
+  display: flex;
+  height: 100%;
+  gap: 30px;
+  margin-bottom: 1rem;
+  .block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 15px;
+    background-color: $bg-task-block;
+    width: 250px;
+    border-radius: 20px;
+    margin-top: 2.5rem;
+    cursor: pointer;
+    transition: background-color 200ms ease;
+    &:hover {
+      background-color: $bg-task-block-hover;
+    }
+    .title {
+      font-weight: 500;
+    }
+  }
+  .head {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 1rem;
+    .circle {
+      display: inline-block;
+      width: 13px;
+      height: 13px;
+      border-radius: 100%;
+    }
+  }
+
+  .list {
+    height: 100%;
+  }
+
+  .addBlock {
+    width: 250px;
+  }
+}

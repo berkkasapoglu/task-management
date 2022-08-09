@@ -1,0 +1,21 @@
+.card {
+  padding: 1.3rem 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 10px;
+  background-color: $bg-task;
+  transition: background-color 300ms ease, color 300ms ease,
+    box-shadow 300ms ease;
+  cursor: pointer;
+  .head {
+    display: flex;
+    justify-content: space-between;
+  }
+  &:hover {
+    background-color: $primary-color;
+    box-shadow: 0 2px 10px 3px $primary-color;
+    color: #fff;
+  }
+  .title {
+    margin-bottom: 0.5rem;
+  }
+}

@@ -1,0 +1,28 @@
+.modal {
+  position: fixed;
+  inset: 0 0 0 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #000;
+  z-index: 20;
+  .wrapper {
+    background-color: $bg-modal;
+    padding: 2rem;
+    width: min(80%, 600px);
+    border-radius: 10px;
+  }
+  .body {
+    margin-bottom: 2rem;
+  }
+  
+  .footer {
+    text-align: right;
+  }
+  
+  .title {
+    margin-bottom: 2rem;
+    font-weight: 500;
+  }
+  
+}
