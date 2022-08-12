@@ -6,6 +6,7 @@
   border: 1px solid $input-border;
   padding: 0.4rem 1rem;
   border-radius: 5px;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
   &:focus {
     border: 1px solid $primary-color;
   }

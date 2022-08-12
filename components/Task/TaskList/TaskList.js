@@ -13,7 +13,7 @@ function TaskList({ tasks, selectedGroup }) {
 
   useEffect(() => {
     if (selectedGroup) {
-      tasks[selectedGroup].forEach((column, idx) => {
+      tasks.columns.forEach((column, idx) => {
         if (!colors[idx]) {
           setColors([...colors, generateRandomColor()])
         }
@@ -33,7 +33,7 @@ function TaskList({ tasks, selectedGroup }) {
   return (
     <div className={styles.columns}>
       {selectedGroup &&
-        tasks[selectedGroup].map((column, columnIdx) => (
+        tasks.columns.map((column, columnIdx) => (
           <div className={styles.addBlock} key={columnIdx}>
             <div className={styles.head}>
               <span
@@ -49,9 +49,9 @@ function TaskList({ tasks, selectedGroup }) {
                   ref={provided.innerRef}
                   className={styles.list}
                 >
-                  {column.tasks.map((task, taskIdx) => (
+                  {/* {column.tasks.map((task, taskIdx) => (
                     <TaskItem task={task} index={taskIdx} key={taskIdx} />
-                  ))}
+                  ))} */}
                   {provided.placeholder}
                 </ul>
               )}

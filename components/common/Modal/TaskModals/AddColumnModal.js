@@ -2,6 +2,7 @@ import styles from "../Modal.module.scss"
 import Button from "../../Button/Button"
 import { useState } from "react"
 import { addColumn } from "../../../../store/slices/taskSlice"
+import { addColumn as addColumnToDB } from "../../../../services/taskColumns"
 import { closeModal } from "../../../../store/slices/modalSlice"
 import { useDispatch, useSelector } from "react-redux"
 import Input from "../../Form/Input/Input"
@@ -13,14 +14,15 @@ function AddColumnModal() {
   })
 
   const dispatch = useDispatch()
-  const selectedGroup = useSelector((state) => state.tasks.currentGroup)
-  const handleAddColumn = () => {
-    dispatch(
-      addColumn({
-        group: selectedGroup || formData.group,
-        column: formData.column,
-      })
-    )
+  const selectedGroup = useSelector((state) => state.tasks.selectedGroup)
+
+  const handleAddColumn = async (e) => {
+    e.preventDefault()
+    const newColumn = await addColumnToDB({
+      name: formData.column,
+      groupId: selectedGroup.id,
+    })
+    dispatch(addColumn(newColumn))
     dispatch(closeModal())
   }
 

@@ -2,6 +2,7 @@ import styles from "../Modal.module.scss"
 import Button from "../../Button/Button"
 import { useState } from "react"
 import { addGroup } from "../../../../store/slices/taskSlice"
+import { addGroup as addGroupToDB } from "../../../../services/taskGroups"
 import { closeModal } from "../../../../store/slices/modalSlice"
 import { useDispatch } from "react-redux"
 import Input from "../../Form/Input/Input"
@@ -10,8 +11,12 @@ function CreateGroupModal() {
   const [groupName, setGroupName] = useState("")
 
   const dispatch = useDispatch()
-  const handleAddGroup = () => {
-    dispatch(addGroup({ group: groupName }))
+  const handleAddGroup = async (e) => {
+    e.preventDefault()
+    const newGroup = await addGroupToDB({
+      name: groupName,
+    })
+    dispatch(addGroup({ group: newGroup }))
     dispatch(closeModal())
   }
 

@@ -10,7 +10,7 @@ function Header() {
     description: "",
   })
   const dispatch = useDispatch()
-  const { selectedGroup } = useSelector((state) => state.tasks.currentGroup)
+  // const { selectedGroup } = useSelector((state) => state.tasks.currentGroup)
 
   const handleOpenTaskModal = () => {
     dispatch(openModal({

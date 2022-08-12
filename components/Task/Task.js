@@ -6,9 +6,14 @@ import { DragDropContext } from "react-beautiful-dnd"
 
 function Task() {
   const { tasks, selectedGroup } = useSelector((state) => {
+    const { selectedGroup } = state.tasks
+    const tasks = state.tasks.taskGroups.find(
+      (group) => group.id === selectedGroup?.id
+    )
+
     return {
-      tasks: state.tasks.taskGroups,
-      selectedGroup: state.tasks.currentGroup,
+      tasks: tasks,
+      selectedGroup: state.tasks.selectedGroup,
     }
   })
   const dispatch = useDispatch()

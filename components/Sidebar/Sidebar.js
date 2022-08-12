@@ -1,13 +1,22 @@
 import styles from "./Sidebar.module.scss"
 import Image from "next/dist/client/image"
 import { openModal } from "../../store/slices/modalSlice"
+import Button from "../common/Button/Button"
 import { selectGroup } from "../../store/slices/taskSlice"
 import { useDispatch, useSelector } from "react-redux"
+import { useSession, signIn, signOut } from "next-auth/react"
+import { useEffect } from "react"
+import { getGroups } from "../../services/taskGroups"
 
-function Sidebar() {
+function Sidebar({ loading }) {
   const dispatch = useDispatch()
-  const tasks = useSelector((state) => state.tasks)
-  const groups = Object.keys(tasks.taskGroups)
+  const { taskGroups, selectedGroup } = useSelector((state) => state.tasks)
+  const { data: session, status } = useSession()
+  useEffect(() => {
+    if (!selectedGroup && taskGroups.length) {
+      handleSelectGroup(taskGroups[0])
+    }
+  }, [taskGroups])
 
   const handleSelectGroup = (group) => {
     dispatch(
@@ -27,35 +36,56 @@ function Sidebar() {
     )
   }
 
+  const handleAuth = (e) => {
+    dispatch(
+      openModal({
+        type: "signUp",
+      })
+    )
+  }
+
   return (
     <nav className={styles.sidebar}>
-      <Image
-        width={80}
-        height={80}
-        src="/assets/logo.svg"
-        alt="Website logo"
-        className={styles.logo}
-        priority={true}
-      />
-      <div className={styles.body}>
-        <h3 className={styles.title}>Task Groups</h3>
-        <ul className={styles.list}>
-          {groups.map((group, idx) =>
-            tasks.currentGroup === group ? (
-              <a key={idx} onClick={() => handleSelectGroup(group)}>
-                <li className={`${styles.item} ${styles.active}`}>{group}</li>
-              </a>
-            ) : (
-              <a key={idx} onClick={() => handleSelectGroup(group)}>
-                <li className={styles.item}>{group}</li>
-              </a>
-            )
-          )}
-          <a className={styles.link} onClick={handleAddGroup}>
-            Create New Group
-          </a>
-        </ul>
+      <div>
+        <Image
+          width={80}
+          height={80}
+          src="/assets/logo.svg"
+          alt="Website logo"
+          className={styles.logo}
+          priority={true}
+        />
+        <div className={styles.body}>
+          <h3 className={styles.title}>Task Groups</h3>
+          <ul className={styles.list}>
+            {taskGroups.map((group, idx) =>
+              selectedGroup.id === group.id || (!selectedGroup && idx === 0) ? (
+                <a key={idx} onClick={() => handleSelectGroup(group)}>
+                  <li className={`${styles.item} ${styles.active}`}>
+                    {group.name}
+                  </li>
+                </a>
+              ) : (
+                <a key={idx} onClick={() => handleSelectGroup(group)}>
+                  <li className={styles.item}>{group.name}</li>
+                </a>
+              )
+            )}
+            <a className={styles.link} onClick={handleAddGroup}>
+              Create New Group
+            </a>
+          </ul>
+        </div>
       </div>
+      {status === "authenticated" ? (
+        <Button onClick={signOut} type="secondary">
+          Sign Out
+        </Button>
+      ) : (
+        <Button onClick={signIn} type="secondary">
+          Sign In
+        </Button>
+      )}
     </nav>
   )
 }

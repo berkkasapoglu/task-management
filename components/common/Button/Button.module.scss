@@ -10,3 +10,10 @@
     background-color: $primary-button-hover;
   }
 }
+
+.secondary {
+  background-color: $secondary-button;
+  &:hover {
+    background-color: $secondary-button-hover;
+  }
+}
