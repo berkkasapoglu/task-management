@@ -51,6 +51,7 @@ model Task {
   id            String    @id @default(cuid())
   title         String
   description   String
+  priority      String
   column        Column    @relation(fields: [columnId], references: [id])
   columnId      String
 }

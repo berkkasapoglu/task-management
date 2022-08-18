@@ -1,20 +1,23 @@
 import styles from "../Modal.module.scss"
 import Button from "../../Button/Button"
+import { addTask } from "../../../../store/task/taskActions"
 import { useState } from "react"
-import { addTask } from "../../../../store/slices/taskSlice"
-import { closeModal } from "../../../../store/slices/modalSlice"
+import { closeModal } from "../../../../store/modal/modalSlice"
 import { useDispatch, useSelector } from "react-redux"
 import Input from "../../Form/Input/Input"
 import Select from "../../Form/Select/Select"
 
 const TASK_PRIORITY = ["Low", "Medium", "High"]
 
-function AddTaskModal() {
+function TaskModal() {
   const { columns } = useSelector((state) => ({
-    columns: state.tasks.taskGroups[state.tasks.currentGroup],
+    columns: state.tasks.taskGroups.find(
+      (group) => group.id === state.tasks.selectedGroup.id
+    ).columns,
   }))
+
   const [formData, setFormData] = useState({
-    column: columns[0].name || "",
+    columnName: columns[0].name || "",
     task: {
       title: "",
       description: "",
@@ -23,7 +26,7 @@ function AddTaskModal() {
   })
 
   const {
-    column,
+    columnName,
     task: { title, description, priority },
   } = formData
 
@@ -49,13 +52,20 @@ function AddTaskModal() {
     }
   }
 
-  const handleAddTask = () => {
-    dispatch(addTask(formData))
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const columnId = columns.find((column) => column.name === columnName).id
+    dispatch(
+      addTask({
+        columnId: columnId,
+        task: formData.task,
+      })
+    )
     dispatch(closeModal())
   }
 
   return (
-    <form onSubmit={handleAddTask}>
+    <form onSubmit={handleSubmit}>
       <div className={styles.header}>
         <h2 className={styles.title}>Add New Column</h2>
       </div>
@@ -63,9 +73,9 @@ function AddTaskModal() {
         <div className={styles.inputWrapper}>
           <Select
             label="Column Name"
-            name="column"
+            name="columnName"
             onChange={onChange}
-            value={column}
+            value={columnName}
             options={columns.map((column) => column.name)}
           />
         </div>
@@ -103,4 +113,4 @@ function AddTaskModal() {
     </form>
   )
 }
-export default AddTaskModal
+export default TaskModal

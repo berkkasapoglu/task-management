@@ -1,17 +1,17 @@
 import styles from "./Sidebar.module.scss"
 import Image from "next/dist/client/image"
-import { openModal } from "../../store/slices/modalSlice"
 import Button from "../common/Button/Button"
-import { selectGroup } from "../../store/slices/taskSlice"
+import { openModal } from "store/modal/modalSlice"
+import { selectGroup } from "store/task/taskSlice"
 import { useDispatch, useSelector } from "react-redux"
 import { useSession, signIn, signOut } from "next-auth/react"
 import { useEffect } from "react"
-import { getGroups } from "../../services/taskGroups"
 
 function Sidebar({ loading }) {
   const dispatch = useDispatch()
   const { taskGroups, selectedGroup } = useSelector((state) => state.tasks)
   const { data: session, status } = useSession()
+
   useEffect(() => {
     if (!selectedGroup && taskGroups.length) {
       handleSelectGroup(taskGroups[0])
@@ -30,8 +30,8 @@ function Sidebar({ loading }) {
     e.preventDefault()
     dispatch(
       openModal({
-        title: "Create New Group",
-        type: "addGroup",
+        type: "group",
+        mode: "add",
       })
     )
   }

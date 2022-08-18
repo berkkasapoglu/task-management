@@ -10,7 +10,7 @@ const PRIORITY_ICONS = {
 
 function TaskItem({ task, index }) {
   return (
-    <Draggable draggableId={task.title + index} index={index}>
+    <Draggable draggableId={task.id} index={index}>
       {(provided) => (
         <li
           className={styles.card}

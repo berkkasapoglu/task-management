@@ -6,4 +6,14 @@
   .title {
     font-weight: 500;
   }
+  .rightSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .threeDots {
+      position: relative;
+      margin-left: 0.5rem;
+      cursor: pointer;
+    }
+  }
 }

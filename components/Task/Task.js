@@ -1,44 +1,40 @@
 import styles from "./Task.module.scss"
-import { updateGroup } from "../../store/slices/taskSlice"
+import { dragTask } from "../../store/task/taskActions"
 import TaskList from "./TaskList/TaskList"
 import { useSelector, useDispatch } from "react-redux"
 import { DragDropContext } from "react-beautiful-dnd"
 
 function Task() {
-  const { tasks, selectedGroup } = useSelector((state) => {
-    const { selectedGroup } = state.tasks
-    const tasks = state.tasks.taskGroups.find(
-      (group) => group.id === selectedGroup?.id
-    )
-
-    return {
-      tasks: tasks,
-      selectedGroup: state.tasks.selectedGroup,
-    }
-  })
+  const selectedGroup = useSelector((state) => state.tasks.selectedGroup)
+  const taskGroup = useSelector((state) =>
+    state.tasks.taskGroups.find((group) => group.id === selectedGroup?.id)
+  )
   const dispatch = useDispatch()
 
   const handleOnDragEnd = (result) => {
     if (!result.destination) return
-    const { droppableId: dragColumnIndex, index: dragTaskIndex } = result.source
-    const { droppableId: dropColumnIndex, index: dropTaskIndex } =
+    const { droppableId: draggedColumnId, index: draggedTaskIndex } =
+      result.source
+    const { droppableId: droppedColumnId, index: droppedTaskIndex } =
       result.destination
-    dragColumnIndex = parseInt(dragColumnIndex)
-    dropColumnIndex = parseInt(dropColumnIndex)
 
-    const columns = JSON.parse(JSON.stringify(tasks[selectedGroup]))
-    const draggedTask = columns[dragColumnIndex].tasks.splice(
-      dragTaskIndex,
-      1
-    )[0]
-    columns[dropColumnIndex].tasks.splice(dropTaskIndex, 0, draggedTask)
-    dispatch(updateGroup(columns))
+    const columns = JSON.parse(JSON.stringify(taskGroup.columns))
+    const draggedColumn = columns.find(
+      (column) => column.id === draggedColumnId
+    )
+
+    const draggedTask = draggedColumn.tasks.splice(draggedTaskIndex, 1)[0]
+    const droppedColumn = columns.find(
+      (column) => column.id === droppedColumnId
+    )
+    droppedColumn.tasks.splice(droppedTaskIndex, 0, draggedTask)
+    dispatch(dragTask(columns))
   }
 
   return (
     <main className={styles.wrapper}>
       <DragDropContext onDragEnd={handleOnDragEnd}>
-        <TaskList tasks={tasks} selectedGroup={selectedGroup} />
+        <TaskList taskGroup={taskGroup} selectedGroup={selectedGroup} />
       </DragDropContext>
     </main>
   )

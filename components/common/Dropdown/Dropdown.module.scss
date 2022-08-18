@@ -1,0 +1,11 @@
+.dropdown {
+  position: absolute;
+  cursor: auto;
+  background-color: rgb(206, 212, 218, 0.5);
+  padding: 1rem;
+  width: 150px;
+  border-radius: 0.5rem;
+  bottom: 0;
+  right: 0;
+  transform: translateY(100%);
+}

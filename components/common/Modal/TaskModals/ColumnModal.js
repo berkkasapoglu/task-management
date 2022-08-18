@@ -1,16 +1,15 @@
 import styles from "../Modal.module.scss"
 import Button from "../../Button/Button"
 import { useState } from "react"
-import { addColumn } from "../../../../store/slices/taskSlice"
-import { addColumn as addColumnToDB } from "../../../../services/taskColumns"
-import { closeModal } from "../../../../store/slices/modalSlice"
+import { addColumn } from "../../../../store/task/taskActions"
+import { closeModal } from "../../../../store/modal/modalSlice"
 import { useDispatch, useSelector } from "react-redux"
 import Input from "../../Form/Input/Input"
 
-function AddColumnModal() {
+function ColumnModal() {
   const [formData, setFormData] = useState({
-    group: "",
-    column: "",
+    groupName: "",
+    columnName: "",
   })
 
   const dispatch = useDispatch()
@@ -18,11 +17,10 @@ function AddColumnModal() {
 
   const handleAddColumn = async (e) => {
     e.preventDefault()
-    const newColumn = await addColumnToDB({
-      name: formData.column,
-      groupId: selectedGroup.id,
-    })
-    dispatch(addColumn(newColumn))
+    if (selectedGroup) {
+      formData["groupId"] = selectedGroup.id
+    }
+    dispatch(addColumn(formData))
     dispatch(closeModal())
   }
 
@@ -43,20 +41,20 @@ function AddColumnModal() {
           <div className={styles.inputWrapper}>
             <Input
               label="Group Name"
-              name="group"
+              name="groupName"
               id="group"
               onChange={onChange}
-              value={formData.group}
+              value={formData.groupName}
             />
           </div>
         )}
         <div className={styles.inputWrapper}>
           <Input
             label="Column Name"
-            name="column"
+            name="columnName"
             id="column"
             onChange={onChange}
-            value={formData.column}
+            value={formData.columnName}
           />
         </div>
       </div>
@@ -66,4 +64,4 @@ function AddColumnModal() {
     </form>
   )
 }
-export default AddColumnModal
+export default ColumnModal

@@ -3,17 +3,17 @@ import { BsPlusLg } from "react-icons/bs"
 import generateRandomColor from "../../../utils/generateRandomColor"
 import { Droppable } from "react-beautiful-dnd"
 import TaskItem from "../TaskItem/TaskItem"
-import { openModal } from "../../../store/slices/modalSlice"
+import { openModal } from "../../../store/modal/modalSlice"
 import { useDispatch } from "react-redux"
 import { useState, useEffect } from "react"
 
-function TaskList({ tasks, selectedGroup }) {
+function TaskList({ taskGroup, selectedGroup }) {
   const [colors, setColors] = useState([])
   const dispatch = useDispatch()
 
   useEffect(() => {
     if (selectedGroup) {
-      tasks.columns.forEach((column, idx) => {
+      taskGroup.columns?.forEach((column, idx) => {
         if (!colors[idx]) {
           setColors([...colors, generateRandomColor()])
         }
@@ -24,8 +24,8 @@ function TaskList({ tasks, selectedGroup }) {
   const handleAddColumn = () => {
     dispatch(
       openModal({
-        type: "addColumn",
-        title: "Add New Column",
+        type: "column",
+        mode: "add",
       })
     )
   }
@@ -33,7 +33,7 @@ function TaskList({ tasks, selectedGroup }) {
   return (
     <div className={styles.columns}>
       {selectedGroup &&
-        tasks.columns.map((column, columnIdx) => (
+        taskGroup.columns?.map((column, columnIdx) => (
           <div className={styles.addBlock} key={columnIdx}>
             <div className={styles.head}>
               <span
@@ -42,16 +42,16 @@ function TaskList({ tasks, selectedGroup }) {
               ></span>
               <p>{column.name}</p>
             </div>
-            <Droppable droppableId={columnIdx.toString()} index={columnIdx}>
+            <Droppable droppableId={column.id} index={columnIdx}>
               {(provided) => (
                 <ul
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                   className={styles.list}
                 >
-                  {/* {column.tasks.map((task, taskIdx) => (
-                    <TaskItem task={task} index={taskIdx} key={taskIdx} />
-                  ))} */}
+                  {column.tasks?.map((task, taskIdx) => (
+                    <TaskItem task={task} index={taskIdx} key={task.id} />
+                  ))}
                   {provided.placeholder}
                 </ul>
               )}

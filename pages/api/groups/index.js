@@ -8,17 +8,25 @@ export default async function handler(req, res) {
         data: {
           name: name,
         },
+        include: {
+          columns: true
+        }
       })
       res.status(200).json(group)
     } else if (req.method === "GET") {
       const groups = await prisma.group.findMany({
         include: {
-          columns: true,
+          columns: {
+            include: {
+              tasks: true,
+            },
+          },
         },
       })
       res.status(200).json(groups)
     }
   } catch (error) {
+    console.log(error)
     res.status(400).json(error)
   }
 }

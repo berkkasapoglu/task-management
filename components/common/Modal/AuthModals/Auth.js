@@ -1,4 +1,3 @@
-import MODAL_TYPES from "../modalTypes"
 import Input from "../../Form/Input/Input"
 import styles from "../Modal.module.scss"
 import Button from "../../Button/Button"
@@ -21,7 +20,7 @@ function Auth({ type }) {
   return (
     <>
       <h2 className={styles.title}>Sign In</h2>
-      {type === MODAL_TYPES.signUp && (
+      {type === "signUp" && (
         <Input
           label="Email"
           type="email"
