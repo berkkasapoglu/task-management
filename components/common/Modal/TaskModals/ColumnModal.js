@@ -1,8 +1,8 @@
 import styles from "../Modal.module.scss"
 import Button from "../../Button/Button"
 import { useState } from "react"
-import { addColumn } from "../../../../store/task/taskActions"
-import { closeModal } from "../../../../store/modal/modalSlice"
+import { addColumn } from "@/store/task/taskActions"
+import { closeModal } from "@/store/modal/modalSlice"
 import { useDispatch, useSelector } from "react-redux"
 import Input from "../../Form/Input/Input"
 

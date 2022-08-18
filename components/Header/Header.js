@@ -3,7 +3,7 @@ import Button from "../common/Button/Button"
 import { BsThreeDotsVertical } from "react-icons/bs"
 import Dropdown from "../common/Dropdown/Dropdown"
 import DropdownItem from "../common/Dropdown/DropdownItem"
-import { openModal } from "store/modal/modalSlice"
+import { openModal } from "@/store/modal/modalSlice"
 import { useDispatch } from "react-redux"
 import { useState } from "react"
 

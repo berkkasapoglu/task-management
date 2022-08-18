@@ -1,12 +1,12 @@
 import Head from "next/head"
-import Sidebar from "../components/Sidebar/Sidebar"
-import Header from "../components/Header/Header"
+import Sidebar from "@/components/Sidebar/Sidebar"
+import Header from "@/components/Header/Header"
 import Container from "@/components/Container/Container"
 import Task from "@/components/Task/Task"
 import Modal from "@/components/common/Modal/Modal"
 import { useSelector, useDispatch } from "react-redux"
 import { useEffect } from "react"
-import { fetchTasks } from "../store/task/taskActions"
+import { fetchTasks } from "@/store/task/taskActions"
 import { resetServerContext } from "react-beautiful-dnd"
 
 export default function Home() {

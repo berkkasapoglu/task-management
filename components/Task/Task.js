@@ -1,5 +1,5 @@
 import styles from "./Task.module.scss"
-import { dragTask } from "../../store/task/taskActions"
+import { dragTask } from "@/store/task/taskActions"
 import TaskList from "./TaskList/TaskList"
 import { useSelector, useDispatch } from "react-redux"
 import { DragDropContext } from "react-beautiful-dnd"

@@ -1,9 +1,9 @@
 import styles from "./TaskList.module.scss"
 import { BsPlusLg } from "react-icons/bs"
-import generateRandomColor from "../../../utils/generateRandomColor"
+import generateRandomColor from "@/utils/generateRandomColor"
 import { Droppable } from "react-beautiful-dnd"
 import TaskItem from "../TaskItem/TaskItem"
-import { openModal } from "../../../store/modal/modalSlice"
+import { openModal } from "@/store/modal/modalSlice"
 import { useDispatch } from "react-redux"
 import { useState, useEffect } from "react"
 

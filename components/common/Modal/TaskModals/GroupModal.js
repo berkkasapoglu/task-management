@@ -1,8 +1,8 @@
 import styles from "../Modal.module.scss"
 import Button from "../../Button/Button"
 import { useState } from "react"
-import { addGroup, editGroup } from "../../../../store/task/taskActions"
-import { closeModal } from "../../../../store/modal/modalSlice"
+import { addGroup, editGroup } from "@/store/task/taskActions"
+import { closeModal } from "@/store/modal/modalSlice"
 import { useDispatch, useSelector } from "react-redux"
 import Input from "../../Form/Input/Input"
 import { useRef } from "react"
@@ -16,7 +16,7 @@ function GroupModal({ mode }) {
   )
 
   const dispatch = useDispatch()
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     const groupData = { name: groupName }

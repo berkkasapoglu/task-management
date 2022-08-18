@@ -3,9 +3,9 @@ import GroupModal from "./TaskModals/GroupModal"
 import ColumnModal from "./TaskModals/ColumnModal"
 import TaskModal from "./TaskModals/TaskModal"
 import Auth from "./AuthModals/Auth"
-import useClickOutside from "../../../hooks/useClickOutside"
+import useClickOutside from "@/hooks/useClickOutside"
 import { useDispatch, useSelector } from "react-redux"
-import { closeModal } from "../../../store/modal/modalSlice"
+import { closeModal } from "@/store/modal/modalSlice"
 import Backdrop from "../Backdrop/Backdrop"
 
 const modalLookupTable = (props) => ({
