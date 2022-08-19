@@ -15,14 +15,34 @@
   .body {
     margin-bottom: 2rem;
   }
-  
+
   .footer {
     text-align: right;
   }
-  
+
   .title {
     margin-bottom: 2rem;
     font-weight: 500;
   }
-  
+
+  .subtitle {
+    font-weight: 600;
+  }
+
+  .cols {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .trash {
+    margin-bottom: 1rem;
+    color: $dark-gray;
+    transition: color 300ms ease;
+    cursor: pointer;
+    &:hover {
+      color: $primary-color;
+    }
+  }
 }

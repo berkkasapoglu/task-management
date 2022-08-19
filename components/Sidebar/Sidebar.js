@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useSession, signIn, signOut } from "next-auth/react"
 import { useEffect } from "react"
 
-function Sidebar({ loading }) {
+function Sidebar() {
   const dispatch = useDispatch()
   const { taskGroups, selectedGroup } = useSelector((state) => state.tasks)
   const { data: session, status } = useSession()
@@ -19,11 +19,7 @@ function Sidebar({ loading }) {
   }, [taskGroups])
 
   const handleSelectGroup = (group) => {
-    dispatch(
-      selectGroup({
-        group,
-      })
-    )
+    dispatch(selectGroup({ id: group.id }))
   }
 
   const handleAddGroup = (e) => {

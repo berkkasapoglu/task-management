@@ -3,12 +3,18 @@ import Button from "../common/Button/Button"
 import { BsThreeDotsVertical } from "react-icons/bs"
 import Dropdown from "../common/Dropdown/Dropdown"
 import DropdownItem from "../common/Dropdown/DropdownItem"
+import { selectCurrentGroup } from "@/store/task/taskSlice"
+import { useSelector } from "react-redux"
 import { openModal } from "@/store/modal/modalSlice"
+import { deleteGroup } from "@/store/task/taskActions"
 import { useDispatch } from "react-redux"
 import { useState } from "react"
 
 function Header() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const currentGroup = useSelector(selectCurrentGroup)
+  const isColumnExist = currentGroup && currentGroup.columns.length
+
   const dispatch = useDispatch()
   const handleOpenTaskModal = () => {
     dispatch(
@@ -19,11 +25,11 @@ function Header() {
     )
   }
 
-  const handleOpenBoardDropdown = () => {
+  const handleOpenGroupDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen)
   }
 
-  const handleEditBoard = () => {
+  const handleEditGroup = () => {
     dispatch(
       openModal({
         type: "group",
@@ -32,20 +38,24 @@ function Header() {
     )
   }
 
-  const handleDeleteBoard = () => {}
+  const handleDeleteGroup = () => {
+    dispatch(deleteGroup(currentGroup.id))
+  }
 
   return (
     <header className={styles.header}>
       <h1 className={styles.title}>Tasks</h1>
       <div className={styles.rightSection}>
-        <Button onClick={handleOpenTaskModal}>Add New Task</Button>
+        <div className={!isColumnExist ? styles.disabled : ""}>
+          <Button onClick={handleOpenTaskModal}>Add New Task</Button>
+        </div>
         <div className={styles.threeDots}>
-          <BsThreeDotsVertical size={25} onClick={handleOpenBoardDropdown} />
+          <BsThreeDotsVertical size={25} onClick={handleOpenGroupDropdown} />
           {isDropdownOpen && (
-            <Dropdown>
-              <DropdownItem onClick={handleEditBoard}>Edit Board</DropdownItem>
-              <DropdownItem color="danger" onClick={handleDeleteBoard}>
-                Delete Board
+            <Dropdown setIsDropdownOpen={setIsDropdownOpen}>
+              <DropdownItem onClick={handleEditGroup}>Edit Board</DropdownItem>
+              <DropdownItem color="danger" onClick={handleDeleteGroup}>
+                Delete Group
               </DropdownItem>
             </Dropdown>
           )}

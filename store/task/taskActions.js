@@ -18,6 +18,13 @@ const addGroup = createAsyncThunk("/api/addGroup", async (data) => {
   return newGroup
 })
 
+const deleteGroup = createAsyncThunk("/api/deleteGroup", async (id) => {
+  await fetch(`api/groups/${id}`, {
+    method: "DELETE",
+  })
+  return id
+})
+
 const editGroup = createAsyncThunk("api/editGroup", async ({ id, group }) => {
   const res = await fetch(`/api/groups/${id}`, {
     method: "PUT",
@@ -65,11 +72,12 @@ const dragTask = createAsyncThunk("api/dragTask", async (data) => {
   return data
 })
 
-export { fetchTasks, addGroup, editGroup, addColumn, addTask, dragTask }
-/*
-  createAsyncThunk("api/fetchTasks", async () => {
-   const res = await fetch("/api/groups")
-   const taskGroups = await res.json()
-   return taskGroups
-  })
-*/
+export {
+  fetchTasks,
+  addGroup,
+  deleteGroup,
+  editGroup,
+  addColumn,
+  addTask,
+  dragTask,
+}

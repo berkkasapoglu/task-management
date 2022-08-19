@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma"
+import generateRandomColor from "@/utils/generateRandomColor"
 
 export default async function handler(req, res) {
   try {
@@ -9,7 +10,7 @@ export default async function handler(req, res) {
           data: {
             name: groupName,
             columns: {
-              create: [{ name: columnName }],
+              create: [{ name: columnName, color: generateRandomColor() }],
             },
           },
           include: {
@@ -25,6 +26,7 @@ export default async function handler(req, res) {
         const newColumn = await prisma.column.create({
           data: {
             name: columnName,
+            color: generateRandomColor(),
             group: {
               connect: { id: groupId },
             },

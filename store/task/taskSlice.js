@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit"
 import {
   fetchTasks,
   addGroup,
+  deleteGroup,
   editGroup,
   addColumn,
   addTask,
@@ -18,7 +19,7 @@ export const taskSlice = createSlice({
   initialState,
   reducers: {
     selectGroup: (state, action) => {
-      state.selectedGroup = action.payload.group
+      state.selectedGroup = action.payload
     },
   },
   extraReducers: (builder) => {
@@ -28,6 +29,12 @@ export const taskSlice = createSlice({
       builder.addCase(addGroup.fulfilled, (state, action) => {
         const group = action.payload
         state.taskGroups.push(group)
+      }),
+      builder.addCase(deleteGroup.fulfilled, (state, action) => {
+        const id = action.payload
+        const group = state.taskGroups.filter((group) => group.id !== id)
+        state.taskGroups = group
+        state.selectedGroup = state.taskGroups[0]
       }),
       builder.addCase(editGroup.fulfilled, (state, action) => {
         const group = action.payload
@@ -66,6 +73,12 @@ export const taskSlice = createSlice({
       })
   },
 })
+
+export const selectCurrentGroup = (state) => {
+  return state.tasks.taskGroups.find(
+    (group) => group.id === state.tasks.selectedGroup.id
+  )
+}
 
 export const { selectGroup } = taskSlice.actions
 

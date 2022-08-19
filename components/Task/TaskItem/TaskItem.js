@@ -1,5 +1,7 @@
 import styles from "./TaskItem.module.scss"
 import { FcLowPriority, FcMediumPriority, FcHighPriority } from "react-icons/fc"
+import { openModal } from "@/store/modal/modalSlice"
+import { useDispatch } from "react-redux"
 import { Draggable } from "react-beautiful-dnd"
 
 const PRIORITY_ICONS = {
@@ -9,6 +11,16 @@ const PRIORITY_ICONS = {
 }
 
 function TaskItem({ task, index }) {
+  const dispatch = useDispatch()
+  const handleOpenTaskView = () => {
+    dispatch(
+      openModal({
+        type: "taskView",
+        task: task,
+      })
+    )
+  }
+
   return (
     <Draggable draggableId={task.id} index={index}>
       {(provided) => (
@@ -17,6 +29,7 @@ function TaskItem({ task, index }) {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
+          onClick={handleOpenTaskView}
         >
           <div className={styles.head}>
             <h3 className={styles.title}>{task.title}</h3>

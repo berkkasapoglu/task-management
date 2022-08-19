@@ -1,7 +1,15 @@
 .item {
+  background-color: transparent;
   margin-bottom: 0.5rem;
+  transition: color 300ms ease;
+  &:hover {
+    color: rgb(0, 0, 0, 0.7);
+  }
 }
 
 .danger {
   color: $danger;
+  &:hover {
+    color: $danger-hover;
+  }
 }

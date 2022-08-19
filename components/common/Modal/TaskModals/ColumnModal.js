@@ -38,25 +38,21 @@ function ColumnModal() {
       </div>
       <div className={styles.body}>
         {!selectedGroup && (
-          <div className={styles.inputWrapper}>
-            <Input
-              label="Group Name"
-              name="groupName"
-              id="group"
-              onChange={onChange}
-              value={formData.groupName}
-            />
-          </div>
-        )}
-        <div className={styles.inputWrapper}>
           <Input
-            label="Column Name"
-            name="columnName"
-            id="column"
+            label="Group Name"
+            name="groupName"
+            id="group"
             onChange={onChange}
-            value={formData.columnName}
+            value={formData.groupName}
           />
-        </div>
+        )}
+        <Input
+          label="Column Name"
+          name="columnName"
+          id="column"
+          onChange={onChange}
+          value={formData.columnName}
+        />
       </div>
       <div className={styles.footer}>
         <Button>Submit</Button>

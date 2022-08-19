@@ -1,25 +1,12 @@
 import styles from "./TaskList.module.scss"
 import { BsPlusLg } from "react-icons/bs"
-import generateRandomColor from "@/utils/generateRandomColor"
 import { Droppable } from "react-beautiful-dnd"
 import TaskItem from "../TaskItem/TaskItem"
 import { openModal } from "@/store/modal/modalSlice"
 import { useDispatch } from "react-redux"
-import { useState, useEffect } from "react"
 
 function TaskList({ taskGroup, selectedGroup }) {
-  const [colors, setColors] = useState([])
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    if (selectedGroup) {
-      taskGroup.columns?.forEach((column, idx) => {
-        if (!colors[idx]) {
-          setColors([...colors, generateRandomColor()])
-        }
-      })
-    }
-  })
 
   const handleAddColumn = () => {
     dispatch(
@@ -38,7 +25,7 @@ function TaskList({ taskGroup, selectedGroup }) {
             <div className={styles.head}>
               <span
                 className={styles.circle}
-                style={{ backgroundColor: colors[columnIdx] }}
+                style={{ backgroundColor: column.color }}
               ></span>
               <p>{column.name}</p>
             </div>

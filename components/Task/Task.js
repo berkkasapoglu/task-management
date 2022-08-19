@@ -1,14 +1,14 @@
 import styles from "./Task.module.scss"
 import { dragTask } from "@/store/task/taskActions"
+import { selectCurrentGroup } from "@/store/task/taskSlice"
 import TaskList from "./TaskList/TaskList"
 import { useSelector, useDispatch } from "react-redux"
 import { DragDropContext } from "react-beautiful-dnd"
 
 function Task() {
   const selectedGroup = useSelector((state) => state.tasks.selectedGroup)
-  const taskGroup = useSelector((state) =>
-    state.tasks.taskGroups.find((group) => group.id === selectedGroup?.id)
-  )
+  const taskGroup = useSelector(selectCurrentGroup)
+
   const dispatch = useDispatch()
 
   const handleOnDragEnd = (result) => {

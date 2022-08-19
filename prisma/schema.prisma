@@ -52,7 +52,7 @@ model Task {
   title         String
   description   String
   priority      String
-  column        Column    @relation(fields: [columnId], references: [id])
+  column        Column    @relation(fields: [columnId], references: [id], onDelete: Cascade)
   columnId      String
 }
 
@@ -65,7 +65,8 @@ model Group {
 model Column {
   id            String    @id @default(cuid())
   name          String
-  group         Group     @relation(fields: [groupId], references: [id])
+  color         String
+  group         Group     @relation(fields: [groupId], references: [id], onDelete: Cascade)
   groupId       String
   tasks         Task[]
 }

@@ -4,17 +4,13 @@ import { addTask } from "@/store/task/taskActions"
 import { useState } from "react"
 import { closeModal } from "@/store/modal/modalSlice"
 import { useDispatch, useSelector } from "react-redux"
+import { selectCurrentGroup } from "@/store/task/taskSlice"
 import Input from "../../Form/Input/Input"
 import Select from "../../Form/Select/Select"
-
-const TASK_PRIORITY = ["Low", "Medium", "High"]
+import { TASK_PRIORITY } from "constants"
 
 function TaskModal() {
-  const { columns } = useSelector((state) => ({
-    columns: state.tasks.taskGroups.find(
-      (group) => group.id === state.tasks.selectedGroup.id
-    ).columns,
-  }))
+  const columns = useSelector(selectCurrentGroup).columns
 
   const [formData, setFormData] = useState({
     columnName: columns[0].name || "",
@@ -70,42 +66,34 @@ function TaskModal() {
         <h2 className={styles.title}>Add New Column</h2>
       </div>
       <div className={styles.body}>
-        <div className={styles.inputWrapper}>
-          <Select
-            label="Column Name"
-            name="columnName"
-            onChange={onChange}
-            value={columnName}
-            options={columns.map((column) => column.name)}
-          />
-        </div>
-        <div className={styles.inputWrapper}>
-          <Input
-            label="Title"
-            name="task_title"
-            id={title}
-            onChange={onChange}
-            value={title}
-          />
-        </div>
-        <div className={styles.inputWrapper}>
-          <Input
-            label="Description"
-            id={title}
-            name="task_description"
-            onChange={onChange}
-            value={description}
-          />
-        </div>
-        <div className={styles.inputWrapper}>
-          <Select
-            label="Status"
-            name="task_priority"
-            onChange={onChange}
-            value={priority}
-            options={TASK_PRIORITY}
-          />
-        </div>
+        <Select
+          label="Column Name"
+          name="columnName"
+          onChange={onChange}
+          value={columnName}
+          options={columns.map((column) => column.name)}
+        />
+        <Input
+          label="Title"
+          name="task_title"
+          id={title}
+          onChange={onChange}
+          value={title}
+        />
+        <Input
+          label="Description"
+          id={title}
+          name="task_description"
+          onChange={onChange}
+          value={description}
+        />
+        <Select
+          label="Status"
+          name="task_priority"
+          onChange={onChange}
+          value={priority}
+          options={TASK_PRIORITY}
+        />
       </div>
       <div className={styles.footer}>
         <Button>Submit</Button>
