@@ -1,29 +1,39 @@
 import styles from "../Modal.module.scss"
 import Button from "../../Button/Button"
-import { addTask } from "@/store/task/taskActions"
+import { useRef } from "react"
+import { addTask, editTask } from "@/store/task/taskActions"
 import { useState } from "react"
 import { closeModal } from "@/store/modal/modalSlice"
 import { useDispatch, useSelector } from "react-redux"
-import { selectCurrentGroup } from "@/store/task/taskSlice"
+import { columnSelectors } from "@/store/task/taskSlice"
+import { FaTrash } from "react-icons/fa"
 import Input from "../../Form/Input/Input"
 import Select from "../../Form/Select/Select"
 import { TASK_PRIORITY } from "constants"
 
-function TaskModal() {
-  const columns = useSelector(selectCurrentGroup).columns
+function TaskModal({ mode, task }) {
+  const columns = useSelector(columnSelectors.selectAll)
+  const currentColumn = useSelector((state) =>
+    columnSelectors.selectById(state, task?.columnId)
+  )
+
+  const isEditMode = useRef(mode === "edit").current
 
   const [formData, setFormData] = useState({
-    columnName: columns[0].name || "",
-    task: {
-      title: "",
-      description: "",
-      priority: TASK_PRIORITY[0],
-    },
+    columnName: isEditMode ? currentColumn.name : columns[0].name,
+    task: isEditMode
+      ? task
+      : {
+          title: "",
+          description: "",
+          priority: TASK_PRIORITY[0],
+          subtasks: [],
+        },
   })
 
   const {
     columnName,
-    task: { title, description, priority },
+    task: { title, description, priority, subtasks },
   } = formData
 
   const dispatch = useDispatch()
@@ -51,28 +61,71 @@ function TaskModal() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const columnId = columns.find((column) => column.name === columnName).id
-    dispatch(
-      addTask({
-        columnId: columnId,
-        task: formData.task,
-      })
-    )
+    isEditMode
+      ? dispatch(editTask(formData.task))
+      : dispatch(
+          addTask({
+            columnId: columnId,
+            task: formData.task,
+          })
+        )
     dispatch(closeModal())
+  }
+
+  const handleSubtaskAdd = (e) => {
+    e.preventDefault()
+    const newSubtask = { title: "" }
+    setFormData({
+      ...formData,
+      task: {
+        ...formData.task,
+        subtasks: [...subtasks, newSubtask],
+      },
+    })
+  }
+
+  const handleSubtaskRemove = (e, idx) => {
+    e.preventDefault()
+    const subtasksCopy = [...subtasks]
+    subtasksCopy.splice(idx, 1)
+    setFormData({
+      ...formData,
+      task: {
+        ...formData.task,
+        subtasks: subtasksCopy,
+      },
+    })
+  }
+
+  const onSubtaskChange = (e, idx) => {
+    const subtasksCopy = subtasks.map((subtask) => ({ ...subtask }))
+    subtasksCopy[idx].title = e.target.value
+    setFormData({
+      ...formData,
+      task: {
+        ...formData.task,
+        subtasks: subtasksCopy,
+      },
+    })
   }
 
   return (
     <form onSubmit={handleSubmit}>
       <div className={styles.header}>
-        <h2 className={styles.title}>Add New Column</h2>
+        <h2 className={styles.title}>
+          {isEditMode ? `Edit Task - ${task.title}` : "Add New Task"}
+        </h2>
       </div>
       <div className={styles.body}>
-        <Select
-          label="Column Name"
-          name="columnName"
-          onChange={onChange}
-          value={columnName}
-          options={columns.map((column) => column.name)}
-        />
+        {!isEditMode && (
+          <Select
+            label="Column Name"
+            name="columnName"
+            onChange={onChange}
+            value={columnName}
+            options={columns.map((column) => column.name)}
+          />
+        )}
         <Input
           label="Title"
           name="task_title"
@@ -94,6 +147,24 @@ function TaskModal() {
           value={priority}
           options={TASK_PRIORITY}
         />
+        <p className={styles.subtitle}>Subtasks</p>
+        {subtasks.map((subtask, idx) => (
+          <div className={styles.cols} key={idx}>
+            <Input
+              placeholder="Title"
+              name="task_subtasks"
+              onChange={(e) => onSubtaskChange(e, idx)}
+              value={subtask.title}
+            />
+            <FaTrash
+              className={styles.trash}
+              onClick={(e) => handleSubtaskRemove(e, idx)}
+            />
+          </div>
+        ))}
+        <Button size="full" type="info" onClick={handleSubtaskAdd}>
+          Add Subtask
+        </Button>
       </div>
       <div className={styles.footer}>
         <Button>Submit</Button>

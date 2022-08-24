@@ -1,7 +1,8 @@
 import styles from "../Modal.module.scss"
 import Button from "../../Button/Button"
 import { FaTrash } from "react-icons/fa"
-import { selectCurrentGroup } from "@/store/task/taskSlice"
+import { groupSelectors, selectCurrentGroup } from "@/store/task/taskSlice"
+import { selectColumnsByGroupId } from "@/store/task/taskSlice"
 import { useState } from "react"
 import { addGroup, editGroup } from "@/store/task/taskActions"
 import { closeModal } from "@/store/modal/modalSlice"
@@ -11,11 +12,15 @@ import { useRef } from "react"
 
 function GroupModal({ mode }) {
   const selectedGroup = useSelector(selectCurrentGroup)
+  const currentColumns = useSelector((state) =>
+    selectColumnsByGroupId(state, selectedGroup?.id)
+  )
   const isEditMode = useRef(mode === "edit").current
 
   const [formData, setFormData] = useState({
     name: isEditMode ? selectedGroup.name : "",
-    columns: selectedGroup.columns,
+    columns: isEditMode ? currentColumns : "",
+    removedColumns: [],
   })
   const { name, columns } = formData
 
@@ -48,10 +53,11 @@ function GroupModal({ mode }) {
 
   const handleColumnDelete = (idx) => {
     const columnsCopy = columns.map((column) => ({ ...column }))
-    columnsCopy.splice(idx, 1)
+    const deletedColumn = columnsCopy.splice(idx, 1)
     setFormData({
       ...formData,
       columns: columnsCopy,
+      removedColumns: [...formData.removedColumns, deletedColumn[0].id],
     })
   }
 

@@ -1,6 +1,7 @@
 import styles from "./Sidebar.module.scss"
 import Image from "next/dist/client/image"
 import Button from "../common/Button/Button"
+import { groupSelectors } from "@/store/task/taskSlice"
 import { openModal } from "@/store/modal/modalSlice"
 import { selectGroup } from "@/store/task/taskSlice"
 import { useDispatch, useSelector } from "react-redux"
@@ -9,14 +10,15 @@ import { useEffect } from "react"
 
 function Sidebar() {
   const dispatch = useDispatch()
-  const { taskGroups, selectedGroup } = useSelector((state) => state.tasks)
+  const selectedGroup = useSelector((state) => state.tasks.selectedGroup)
+  const groups = useSelector((state) => state.tasks.groups)
   const { data: session, status } = useSession()
 
   useEffect(() => {
-    if (!selectedGroup && taskGroups.length) {
-      handleSelectGroup(taskGroups[0])
+    if (!selectedGroup && groups.ids.length) {
+      handleSelectGroup(groups.entities[groups.ids[0]])
     }
-  }, [taskGroups])
+  }, [groups])
 
   const handleSelectGroup = (group) => {
     dispatch(selectGroup({ id: group.id }))
@@ -54,8 +56,9 @@ function Sidebar() {
         <div className={styles.body}>
           <h3 className={styles.title}>Task Groups</h3>
           <ul className={styles.list}>
-            {taskGroups.map((group, idx) =>
-              selectedGroup.id === group.id || (!selectedGroup && idx === 0) ? (
+            {Object.values(groups.entities).map((group, idx) =>
+              selectedGroup?.id === group.id ||
+              (!selectedGroup && idx === 0) ? (
                 <a key={idx} onClick={() => handleSelectGroup(group)}>
                   <li className={`${styles.item} ${styles.active}`}>
                     {group.name}

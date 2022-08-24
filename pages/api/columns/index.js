@@ -40,7 +40,7 @@ export default async function handler(req, res) {
     }
     if (req.method === "PUT") {
       const columns = JSON.parse(req.body)
-      await Promise.all(
+      const updatedColumns = await Promise.all(
         columns.map(async (column) => {
           const tasks = column.tasks.map((task) => {
             const { id, columnId, ...fields } = task
@@ -53,13 +53,27 @@ export default async function handler(req, res) {
             data: {
               tasks: {
                 deleteMany: {},
-                create: tasks,
+                create: tasks.map((task) => ({
+                  ...task,
+                  subtasks: {
+                    create: task.subtasks.map((subtask) => ({
+                      title: subtask.title,
+                    })),
+                  },
+                })),
+              },
+            },
+            include: {
+              tasks: {
+                include: {
+                  subtasks: true,
+                },
               },
             },
           })
         })
       )
-      res.status(200).json({ message: "Dragged" })
+      res.status(200).json(updatedColumns)
     }
   } catch (error) {
     console.log(error)

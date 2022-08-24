@@ -47,15 +47,6 @@ model User {
   sessions      Session[]
 }
 
-model Task {
-  id            String    @id @default(cuid())
-  title         String
-  description   String
-  priority      String
-  column        Column    @relation(fields: [columnId], references: [id], onDelete: Cascade)
-  columnId      String
-}
-
 model Group {
   id            String    @id @default(cuid())
   name          String
@@ -69,6 +60,23 @@ model Column {
   group         Group     @relation(fields: [groupId], references: [id], onDelete: Cascade)
   groupId       String
   tasks         Task[]
+}
+
+model Task {
+  id            String    @id @default(cuid())
+  title         String
+  description   String
+  priority      String
+  column        Column    @relation(fields: [columnId], references: [id], onDelete: Cascade)
+  columnId      String
+  subtasks      SubTask[]
+}
+
+model SubTask {
+  id            String    @id @default(cuid())
+  title         String
+  task          Task    @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId        String
 }
 
 model VerificationToken {

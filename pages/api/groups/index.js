@@ -14,7 +14,11 @@ export default async function handler(req, res) {
               id: "asc",
             },
             include: {
-              tasks: true,
+              tasks: {
+                include: {
+                  subtasks: true,
+                },
+              },
             },
           },
         },

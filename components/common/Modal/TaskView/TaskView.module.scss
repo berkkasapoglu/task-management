@@ -1,0 +1,20 @@
+.header {
+  .title {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+  .description {
+    margin-bottom: 1.2rem;
+  }
+}
+
+.body {
+  margin-bottom: 2rem;
+}
+
+.footer {
+  text-align: right;
+  & button:first-child {
+    margin-right: 1rem;
+  }
+}

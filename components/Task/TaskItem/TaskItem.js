@@ -12,6 +12,7 @@ const PRIORITY_ICONS = {
 
 function TaskItem({ task, index }) {
   const dispatch = useDispatch()
+
   const handleOpenTaskView = () => {
     dispatch(
       openModal({

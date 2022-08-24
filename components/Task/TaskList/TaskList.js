@@ -1,12 +1,20 @@
 import styles from "./TaskList.module.scss"
 import { BsPlusLg } from "react-icons/bs"
 import { Droppable } from "react-beautiful-dnd"
+import { columnSelectors } from "@/store/task/taskSlice"
+import { selectColumnsByGroupId } from "@/store/task/taskSlice"
+import { taskSelectors } from "@/store/task/taskSlice"
 import TaskItem from "../TaskItem/TaskItem"
 import { openModal } from "@/store/modal/modalSlice"
 import { useDispatch } from "react-redux"
+import { useSelector } from "react-redux"
 
-function TaskList({ taskGroup, selectedGroup }) {
+function TaskList({ selectedGroup }) {
   const dispatch = useDispatch()
+  const columns = useSelector((state) =>
+    selectColumnsByGroupId(state, state.tasks.selectedGroup.id)
+  )
+  const tasks = useSelector(taskSelectors.selectEntities)
 
   const handleAddColumn = () => {
     dispatch(
@@ -20,8 +28,8 @@ function TaskList({ taskGroup, selectedGroup }) {
   return (
     <div className={styles.columns}>
       {selectedGroup &&
-        taskGroup.columns?.map((column, columnIdx) => (
-          <div className={styles.addBlock} key={columnIdx}>
+        columns.map((column, columnIdx) => (
+          <div className={styles.addBlock} key={column.id}>
             <div className={styles.head}>
               <span
                 className={styles.circle}
@@ -36,8 +44,12 @@ function TaskList({ taskGroup, selectedGroup }) {
                   ref={provided.innerRef}
                   className={styles.list}
                 >
-                  {column.tasks?.map((task, taskIdx) => (
-                    <TaskItem task={task} index={taskIdx} key={task.id} />
+                  {column.tasks?.map((taskId, taskIdx) => (
+                    <TaskItem
+                      task={tasks[taskId]}
+                      index={taskIdx}
+                      key={taskId}
+                    />
                   ))}
                   {provided.placeholder}
                 </ul>

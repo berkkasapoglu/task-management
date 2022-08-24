@@ -10,14 +10,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    .disabled {
-      opacity: 0.5;
-      pointer-events: none;
-    }
     .threeDots {
       position: relative;
       margin-left: 0.5rem;
       cursor: pointer;
     }
+  }
+  .disabled {
+    opacity: 0.5;
+    pointer-events: none;
   }
 }

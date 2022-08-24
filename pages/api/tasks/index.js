@@ -7,9 +7,15 @@ export default async function handler(req, res) {
       const newTask = await prisma.task.create({
         data: {
           ...task,
+          subtasks: {
+            create: task.subtasks.map((subtask) => ({ ...subtask })),
+          },
           column: {
             connect: { id: columnId },
           },
+        },
+        include: {
+          subtasks: true,
         },
       })
       res.status(200).json(newTask)

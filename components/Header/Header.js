@@ -3,6 +3,7 @@ import Button from "../common/Button/Button"
 import { BsThreeDotsVertical } from "react-icons/bs"
 import Dropdown from "../common/Dropdown/Dropdown"
 import DropdownItem from "../common/Dropdown/DropdownItem"
+import { groupSelectors } from "@/store/task/taskSlice"
 import { selectCurrentGroup } from "@/store/task/taskSlice"
 import { useSelector } from "react-redux"
 import { openModal } from "@/store/modal/modalSlice"
@@ -49,11 +50,15 @@ function Header() {
         <div className={!isColumnExist ? styles.disabled : ""}>
           <Button onClick={handleOpenTaskModal}>Add New Task</Button>
         </div>
-        <div className={styles.threeDots}>
+        <div
+          className={`${styles.threeDots} ${
+            !currentGroup ? styles.disabled : ""
+          }`}
+        >
           <BsThreeDotsVertical size={25} onClick={handleOpenGroupDropdown} />
           {isDropdownOpen && (
             <Dropdown setIsDropdownOpen={setIsDropdownOpen}>
-              <DropdownItem onClick={handleEditGroup}>Edit Board</DropdownItem>
+              <DropdownItem onClick={handleEditGroup}>Edit Group</DropdownItem>
               <DropdownItem color="danger" onClick={handleDeleteGroup}>
                 Delete Group
               </DropdownItem>
