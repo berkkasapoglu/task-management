@@ -1,3 +1,4 @@
+//Colors
 $bg-body: #f3f5f7;
 $primary-color: rgba(67, 192, 120, 1);
 $primary-text: rgba(67, 192, 120, 1);
@@ -15,3 +16,10 @@ $danger: #fa5252;
 $danger-hover: #ff6b6b;
 $info: #339af0;
 $info-hover: #4dabf7;
+$task-hover: rgba(67, 192, 120, 0.6);
+$bg-subtask: rgba(156, 161, 167, 0.4);
+$bg-subtask-hover: rgba(156, 161, 167, 0.5);
+
+//Screen Sizes
+$desktop: 1024px;
+$laptop: 768px;

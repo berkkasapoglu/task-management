@@ -6,13 +6,16 @@ import { useState } from "react"
 import { closeModal } from "@/store/modal/modalSlice"
 import { useDispatch, useSelector } from "react-redux"
 import { columnSelectors } from "@/store/task/taskSlice"
+import { selectColumnsByGroupId } from "@/store/task/taskSlice"
 import { FaTrash } from "react-icons/fa"
 import Input from "../../Form/Input/Input"
 import Select from "../../Form/Select/Select"
 import { TASK_PRIORITY } from "constants"
 
 function TaskModal({ mode, task }) {
-  const columns = useSelector(columnSelectors.selectAll)
+  const columns = useSelector((state) =>
+    selectColumnsByGroupId(state, state.tasks.selectedGroup.id)
+  )
   const currentColumn = useSelector((state) =>
     columnSelectors.selectById(state, task?.columnId)
   )

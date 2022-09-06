@@ -1,16 +1,28 @@
 .modal {
   position: fixed;
-  inset: 0 0 0 0;
+  inset: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   color: #000;
   z-index: 20;
   .wrapper {
+    position: relative;
     background-color: $bg-modal;
     padding: 2rem;
-    width: min(80%, 600px);
+    width: min(85%, 600px);
     border-radius: 10px;
+    .closeIcon {
+      cursor: pointer;
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin: 2rem;
+      transition: color 300ms ease;
+      &:hover {
+        color: $primary-color;
+      }
+    }
   }
   .body {
     margin-bottom: 2rem;
@@ -27,7 +39,7 @@
 
   .subtitle {
     font-weight: 600;
-    margin-bottom: .2rem;
+    margin-bottom: 0.2rem;
   }
 
   .cols {

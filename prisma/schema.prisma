@@ -75,7 +75,8 @@ model Task {
 model SubTask {
   id            String    @id @default(cuid())
   title         String
-  task          Task    @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  isDone        Boolean   @default(false)
+  task          Task      @relation(fields: [taskId], references: [id], onDelete: Cascade)
   taskId        String
 }
 

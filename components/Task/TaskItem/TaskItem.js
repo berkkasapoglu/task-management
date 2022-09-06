@@ -1,4 +1,6 @@
 import styles from "./TaskItem.module.scss"
+import variants from "@/utils/variants"
+import { motion } from "framer-motion"
 import { FcLowPriority, FcMediumPriority, FcHighPriority } from "react-icons/fc"
 import { openModal } from "@/store/modal/modalSlice"
 import { useDispatch } from "react-redux"
@@ -12,12 +14,16 @@ const PRIORITY_ICONS = {
 
 function TaskItem({ task, index }) {
   const dispatch = useDispatch()
+  const completedTaskCount = task.subtasks.reduce(
+    (prev, curr) => (curr.isDone ? prev + 1 : prev),
+    0
+  )
 
   const handleOpenTaskView = () => {
     dispatch(
       openModal({
         type: "taskView",
-        task: task,
+        taskId: task.id,
       })
     )
   }
@@ -32,11 +38,14 @@ function TaskItem({ task, index }) {
           ref={provided.innerRef}
           onClick={handleOpenTaskView}
         >
-          <div className={styles.head}>
+          <div className={styles.head} custom={index}>
             <h3 className={styles.title}>{task.title}</h3>
             {PRIORITY_ICONS[task.priority]}
           </div>
           <p>{task.description}</p>
+          <p className={styles.subtaskStatus}>
+            Subtasks: {completedTaskCount}/{task.subtasks.length}
+          </p>
         </li>
       )}
     </Draggable>

@@ -1,7 +1,8 @@
 import styles from "./TaskList.module.scss"
+import { motion } from "framer-motion"
+import variants from "@/utils/variants"
 import { BsPlusLg } from "react-icons/bs"
 import { Droppable } from "react-beautiful-dnd"
-import { columnSelectors } from "@/store/task/taskSlice"
 import { selectColumnsByGroupId } from "@/store/task/taskSlice"
 import { taskSelectors } from "@/store/task/taskSlice"
 import TaskItem from "../TaskItem/TaskItem"
@@ -30,13 +31,21 @@ function TaskList({ selectedGroup }) {
       {selectedGroup &&
         columns.map((column, columnIdx) => (
           <div className={styles.addBlock} key={column.id}>
-            <div className={styles.head}>
+            <motion.div
+              layout
+              custom={columnIdx}
+              variants={variants.columnHeader}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className={styles.head}
+            >
               <span
                 className={styles.circle}
                 style={{ backgroundColor: column.color }}
               ></span>
               <p>{column.name}</p>
-            </div>
+            </motion.div>
             <Droppable droppableId={column.id} index={columnIdx}>
               {(provided) => (
                 <ul

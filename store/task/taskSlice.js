@@ -9,6 +9,7 @@ import {
   deleteTask,
   dragTask,
   editTask,
+  editSubtask,
 } from "./taskActions"
 import { createEntityAdapter } from "@reduxjs/toolkit"
 
@@ -138,6 +139,21 @@ export const taskSlice = createSlice({
           state.tasks,
           columns.map((column) => column.tasks).flat()
         )
+      })
+      .addCase(editSubtask.fulfilled, (state, action) => {
+        const editedSubtask = action.payload
+        const currentTask = state.tasks.entities[editedSubtask.taskId]
+        taskAdapter.updateOne(state.tasks, {
+          id: currentTask.id,
+          changes: {
+            subtasks: currentTask.subtasks.map((subtask) => {
+              if (subtask.id === editedSubtask.id) {
+                return editedSubtask
+              }
+              return subtask
+            }),
+          },
+        })
       })
   },
 })

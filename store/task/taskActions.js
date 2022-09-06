@@ -122,6 +122,18 @@ const dragTask = createAsyncThunk("api/dragTask", async (data) => {
   return updatedColumns
 })
 
+const editSubtask = createAsyncThunk("api/editSubtask", async (data) => {
+  const res = await fetch(`/api/subtasks`, {
+    method: "PUT",
+    header: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+  if (!res.ok) throw Error("Can't Edit Subtask.")
+  return data
+})
+
 export {
   fetchTasks,
   addGroup,
@@ -130,4 +142,5 @@ export {
   addColumn,
   addTask,
   dragTask,
+  editSubtask,
 }

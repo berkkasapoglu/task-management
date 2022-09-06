@@ -3,16 +3,18 @@ import Button from "../common/Button/Button"
 import { BsThreeDotsVertical } from "react-icons/bs"
 import Dropdown from "../common/Dropdown/Dropdown"
 import DropdownItem from "../common/Dropdown/DropdownItem"
-import { groupSelectors } from "@/store/task/taskSlice"
 import { selectCurrentGroup } from "@/store/task/taskSlice"
 import { useSelector } from "react-redux"
 import { openModal } from "@/store/modal/modalSlice"
 import { deleteGroup } from "@/store/task/taskActions"
 import { useDispatch } from "react-redux"
 import { useState } from "react"
+import useWindowSize from "@/hooks/useWindowSize"
 
 function Header() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const screen = useWindowSize()
+  const isMobile = screen.width <= 768
   const currentGroup = useSelector(selectCurrentGroup)
   const isColumnExist = currentGroup && currentGroup.columns.length
 
@@ -48,7 +50,9 @@ function Header() {
       <h1 className={styles.title}>Tasks</h1>
       <div className={styles.rightSection}>
         <div className={!isColumnExist ? styles.disabled : ""}>
-          <Button onClick={handleOpenTaskModal}>Add New Task</Button>
+          <Button onClick={handleOpenTaskModal}>
+            {isMobile ? "Add" : "Add New Task"}
+          </Button>
         </div>
         <div
           className={`${styles.threeDots} ${

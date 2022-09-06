@@ -1,4 +1,7 @@
 .sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   position: fixed;
   width: 200px;
   height: 100vh;
@@ -6,17 +9,17 @@
   top: 0;
   bottom: 0;
   padding: 2rem 1.5rem 2rem 2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   background-color: $primary-color;
+  z-index: 20;
+
   .logo {
+    width: 80px;
+    margin: 0 auto;
     cursor: pointer;
   }
 
   .body {
     margin-top: 3rem;
-
     .title {
       color: #fff;
       font-size: 0.9rem;
@@ -39,31 +42,39 @@
       &.active {
         background-color: $bg-body;
         color: $primary-text;
+      }
 
-        &::after,
-        &::before {
-          content: "";
-          position: absolute;
-          width: 200px;
-          height: 40px;
-          cursor: auto;
-          z-index: -5;
+      .topBlock {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 50px;
+        height: 40px;
+        transform: translateY(-100%);
+        cursor: auto;
+        &.back {
+          background-color: $bg-body;
         }
-
-        &::after {
-          box-shadow: 40px 0 0 0 $bg-body;
+        &.front {
+          background-color: $primary-color;
           border-radius: 0 0 45px 0;
-          top: 0;
-          right: 0;
-          transform: translateY(-100%);
         }
+      }
 
-        &::before {
-          box-shadow: 40px 0 0 0 $bg-body;
+      .bottomBlock {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 50px;
+        height: 40px;
+        transform: translateY(100%);
+        cursor: auto;
+        &.back {
+          background-color: $bg-body;
+        }
+        &.front {
+          background-color: $primary-color;
           border-radius: 0 45px 0 0;
-          bottom: 0;
-          right: 0;
-          transform: translateY(100%);
         }
       }
     }
@@ -75,5 +86,20 @@
       font-size: 0.9rem;
       margin-top: 1rem;
     }
+  }
+}
+
+.toggle {
+  position: fixed;
+  bottom: 30px;
+  cursor: pointer;
+  background-color: $primary-color;
+  font-size: 2.5rem;
+  color: #fff;
+  transition: left ease 500ms;
+  margin-left: 230px;
+  transition: transform 300ms ease-in-out;
+  &.leftArrow {
+    transform: rotate(-180deg);
   }
 }

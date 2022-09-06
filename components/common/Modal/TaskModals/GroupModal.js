@@ -1,7 +1,7 @@
 import styles from "../Modal.module.scss"
 import Button from "../../Button/Button"
 import { FaTrash } from "react-icons/fa"
-import { groupSelectors, selectCurrentGroup } from "@/store/task/taskSlice"
+import { selectCurrentGroup } from "@/store/task/taskSlice"
 import { selectColumnsByGroupId } from "@/store/task/taskSlice"
 import { useState } from "react"
 import { addGroup, editGroup } from "@/store/task/taskActions"

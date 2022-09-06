@@ -13,8 +13,20 @@
 }
 
 .footer {
+  display: flex;
+  justify-content: right;
   text-align: right;
   & button:first-child {
     margin-right: 1rem;
   }
+  @media (max-width: $laptop) {
+  }
+}
+
+.subtaskList {
+  margin-bottom: 1.5rem;
+}
+
+.subtitle {
+  margin-bottom: 0.3rem;
 }
