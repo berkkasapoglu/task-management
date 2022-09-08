@@ -45,12 +45,15 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  groups        Group[]
 }
 
 model Group {
   id            String    @id @default(cuid())
   name          String
   columns       Column[]
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Column {

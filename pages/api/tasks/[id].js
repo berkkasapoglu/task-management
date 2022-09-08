@@ -14,7 +14,10 @@ export default async function handler(req, res) {
           subtasks: {
             deleteMany: {},
             createMany: {
-              data: subtasks.map((subtask) => ({ title: subtask.title })),
+              data: subtasks.map((subtask) => ({
+                title: subtask.title,
+                isDone: subtask.isDone,
+              })),
             },
           },
         },

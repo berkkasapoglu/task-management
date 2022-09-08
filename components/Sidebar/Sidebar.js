@@ -54,14 +54,6 @@ function Sidebar() {
     )
   }
 
-  const handleAuth = (e) => {
-    dispatch(
-      openModal({
-        type: "signUp",
-      })
-    )
-  }
-
   const handleToggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen)
   }

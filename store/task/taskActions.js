@@ -20,7 +20,6 @@ const fetchTasks = createAsyncThunk(
     const taskUnNormalized = columnsUnNormalized
       .map((column) => column.tasks)
       .flat()
-    // const tasks = normalize(taskUnNormalized, "subtasks")
     return { groups, columns, tasks: taskUnNormalized }
   }
 )
