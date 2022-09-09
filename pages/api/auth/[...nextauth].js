@@ -15,4 +15,5 @@ export default NextAuth({
     colorScheme: "light",
     logo: "/favicon.ico",
   },
+  secret: process.env.NEXTAUTH_SECRET,
 })
