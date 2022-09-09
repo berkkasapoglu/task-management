@@ -10,7 +10,7 @@ export default function Home() {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(fetchTasks())
-  }, [])
+  }, [dispatch])
 
   return (
     <>
@@ -25,7 +25,7 @@ export default function Home() {
   )
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
   resetServerContext()
   return { props: { data: [] } }
 }

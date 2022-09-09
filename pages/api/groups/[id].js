@@ -31,7 +31,7 @@ export default async function handler(req, res) {
           },
         },
       })
-      
+
       await Promise.all(
         columns.map(async (column) => {
           const { tasks, ...rest } = column
@@ -68,7 +68,6 @@ export default async function handler(req, res) {
       res.status(200).json(updatedGroup)
     }
   } catch (error) {
-    console.log(error)
     res.status(400).json(error)
   }
 }

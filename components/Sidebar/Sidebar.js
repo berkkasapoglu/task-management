@@ -11,6 +11,7 @@ import { motion } from "framer-motion"
 import useWindowSize from "@/hooks/useWindowSize"
 import useClickOutside from "@/hooks/useClickOutside"
 import { useState } from "react"
+import { useCallback } from "react"
 
 function Sidebar() {
   const screen = useWindowSize()
@@ -19,30 +20,32 @@ function Sidebar() {
     isMobile && setIsSidebarOpen(false)
   })
 
-  useEffect(() => {
-    if (isMobile) {
-      setIsSidebarOpen(false)
-    } else {
-      setIsSidebarOpen(true)
-    }
-  }, [screen.width])
-
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
-
   const dispatch = useDispatch()
   const selectedGroup = useSelector((state) => state.tasks.selectedGroup)
   const groups = useSelector((state) => state.tasks.groups)
   const { status } = useSession()
 
   useEffect(() => {
+    if (isMobile) {
+      setIsSidebarOpen(false)
+    } else {
+      setIsSidebarOpen(true)
+    }
+  }, [screen.width, isMobile])
+
+  const handleSelectGroup = useCallback(
+    (group) => {
+      dispatch(selectGroup({ id: group.id }))
+    },
+    [dispatch]
+  )
+
+  useEffect(() => {
     if (!selectedGroup && groups.ids.length) {
       handleSelectGroup(groups.entities[groups.ids[0]])
     }
-  }, [groups])
-
-  const handleSelectGroup = (group) => {
-    dispatch(selectGroup({ id: group.id }))
-  }
+  }, [groups, selectedGroup, handleSelectGroup])
 
   const handleAddGroup = (e) => {
     e.preventDefault()
