@@ -1,4 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
+import { toast } from "react-toastify"
 import { dragTask } from "./taskSlice"
 
 //Deletes object properties except id
@@ -33,7 +34,10 @@ const addGroup = createAsyncThunk("/api/addGroup", async (data) => {
     body: JSON.stringify(data),
   })
   const newGroup = await res.json()
-  if (!res.ok) throw Error("Group can't added.")
+  if (!res.ok) {
+    toast.error(newGroup.message)
+    throw Error(newGroup.message)
+  }
   return newGroup
 })
 
@@ -66,8 +70,12 @@ const addColumn = createAsyncThunk("api/addColumn", async (data) => {
     },
     body: JSON.stringify(data),
   })
-  if (!res.ok) throw Error("Can't Add Column.")
   const taskColumns = await res.json()
+
+  if (!res.ok) {
+    toast.error(taskColumns.message)
+    throw Error(taskColumns.message)
+  }
   return taskColumns
 })
 
@@ -120,6 +128,8 @@ const dragTaskAsync = createAsyncThunk(
       body: JSON.stringify(data),
     })
     if (!res.ok) throw Error("Can't Drag Task.")
+    const newColumns = await res.json()
+    dispatch(dragTask(newColumns))
   }
 )
 

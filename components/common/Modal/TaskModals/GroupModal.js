@@ -9,12 +9,14 @@ import { closeModal } from "@/store/modal/modalSlice"
 import { useDispatch, useSelector } from "react-redux"
 import Input from "../../Form/Input/Input"
 import { useRef } from "react"
+import { toast } from "react-toastify"
 
 function GroupModal({ mode }) {
   const selectedGroup = useSelector(selectCurrentGroup)
   const currentColumns = useSelector((state) =>
     selectColumnsByGroupId(state, selectedGroup?.id)
   )
+  const error = useSelector((state) => state.tasks.error)
   const isEditMode = useRef(mode === "edit").current
 
   const [formData, setFormData] = useState({

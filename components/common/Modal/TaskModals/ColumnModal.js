@@ -5,6 +5,7 @@ import { addColumn } from "@/store/task/taskActions"
 import { closeModal } from "@/store/modal/modalSlice"
 import { useDispatch, useSelector } from "react-redux"
 import Input from "../../Form/Input/Input"
+import { toast } from "react-toastify"
 
 function ColumnModal() {
   const [formData, setFormData] = useState({
@@ -14,6 +15,7 @@ function ColumnModal() {
 
   const dispatch = useDispatch()
   const selectedGroup = useSelector((state) => state.tasks.selectedGroup)
+  const error = useSelector((state) => state.tasks.error)
 
   const handleAddColumn = async (e) => {
     e.preventDefault()

@@ -32,7 +32,7 @@ function Sidebar() {
   const dispatch = useDispatch()
   const selectedGroup = useSelector((state) => state.tasks.selectedGroup)
   const groups = useSelector((state) => state.tasks.groups)
-  const { data: session, status } = useSession()
+  const { status } = useSession()
 
   useEffect(() => {
     if (!selectedGroup && groups.ids.length) {

@@ -1,6 +1,4 @@
 import styles from "./TaskItem.module.scss"
-import variants from "@/utils/variants"
-import { motion } from "framer-motion"
 import { FcLowPriority, FcMediumPriority, FcHighPriority } from "react-icons/fc"
 import { openModal } from "@/store/modal/modalSlice"
 import { useDispatch } from "react-redux"

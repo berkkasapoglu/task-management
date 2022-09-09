@@ -34,10 +34,9 @@ export default async function handler(req, res) {
             },
           },
         })
-        res.status(200).json(groups)
-      } else {
-        res.status(401).json({ message: "Unauthorized." })
+        return res.status(200).json(groups)
       }
+      res.status(200).json()
     }
     if (req.method === "POST") {
       if (session) {
@@ -59,7 +58,7 @@ export default async function handler(req, res) {
         })
         res.status(200).json(group)
       } else {
-        res.status(401).json({ message: "Unauthorized." })
+        res.status(401).json({ message: "You must be logged in." })
       }
     }
   } catch (error) {

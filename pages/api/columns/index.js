@@ -34,7 +34,7 @@ export default async function handler(req, res) {
           })
           res.status(200).json(newGroup)
         } else {
-          res.status(401).json({ message: "Unauthorized." })
+          res.status(401).json({ message: "You must be logged in." })
         }
       } else {
         const newColumn = await prisma.column.create({
