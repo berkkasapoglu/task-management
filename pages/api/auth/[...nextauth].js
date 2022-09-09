@@ -11,4 +11,8 @@ export default NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
+  theme: {
+    colorScheme: "light",
+    logo: "/favicon.ico",
+  },
 })

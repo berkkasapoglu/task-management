@@ -15,6 +15,7 @@ function TaskList({ selectedGroup }) {
   const columns = useSelector((state) =>
     selectColumnsByGroupId(state, state.tasks.selectedGroup.id)
   )
+
   const tasks = useSelector(taskSelectors.selectEntities)
 
   const handleAddColumn = () => {

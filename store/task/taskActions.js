@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { setGroups, setColumns, setTasks } from "./taskSlice"
+import { dragTask } from "./taskSlice"
 
 //Deletes object properties except id
 const normalize = (data, key) => {
@@ -108,18 +108,20 @@ export const editTask = createAsyncThunk("api/editTask", async (data) => {
   return updatedTask
 })
 
-const dragTask = createAsyncThunk("api/dragTask", async (data) => {
-  const res = await fetch(`/api/columns`, {
-    method: "PUT",
-    header: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  })
-  if (!res.ok) throw Error("Can't Drag Task.")
-  const updatedColumns = await res.json()
-  return updatedColumns
-})
+const dragTaskAsync = createAsyncThunk(
+  "api/dragTask",
+  async (data, { dispatch }) => {
+    dispatch(dragTask(data))
+    const res = await fetch(`/api/columns`, {
+      method: "PUT",
+      header: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+    if (!res.ok) throw Error("Can't Drag Task.")
+  }
+)
 
 const editSubtask = createAsyncThunk("api/editSubtask", async (data) => {
   const res = await fetch(`/api/subtasks`, {
@@ -140,6 +142,6 @@ export {
   editGroup,
   addColumn,
   addTask,
-  dragTask,
+  dragTaskAsync,
   editSubtask,
 }

@@ -7,7 +7,6 @@ import {
   addColumn,
   addTask,
   deleteTask,
-  dragTask,
   editTask,
   editSubtask,
 } from "./taskActions"
@@ -36,6 +35,18 @@ export const taskSlice = createSlice({
   reducers: {
     selectGroup(state, action) {
       state.selectedGroup = action.payload
+    },
+    dragTask(state, action) {
+      const columns = action.payload
+      const draggedColumns = columns.map((column) => ({
+        ...column,
+        tasks: column.tasks.map((task) => task.id),
+      }))
+      columnAdapter.setMany(state.columns, draggedColumns)
+      taskAdapter.setMany(
+        state.tasks,
+        columns.map((column) => column.tasks).flat()
+      )
     },
   },
   extraReducers: (builder) => {
@@ -128,18 +139,6 @@ export const taskSlice = createSlice({
         const updatedTask = action.payload
         taskAdapter.setOne(state.tasks, updatedTask)
       })
-      .addCase(dragTask.fulfilled, (state, action) => {
-        const columns = action.payload
-        const draggedColumns = columns.map((column) => ({
-          ...column,
-          tasks: column.tasks.map((task) => task.id),
-        }))
-        columnAdapter.setMany(state.columns, draggedColumns)
-        taskAdapter.setMany(
-          state.tasks,
-          columns.map((column) => column.tasks).flat()
-        )
-      })
       .addCase(editSubtask.fulfilled, (state, action) => {
         const editedSubtask = action.payload
         const currentTask = state.tasks.entities[editedSubtask.taskId]
@@ -186,7 +185,7 @@ export const selectCurrentGroup = (state) => {
   return groupSelectors.selectById(state, state.tasks.selectedGroup.id)
 }
 
-export const { selectGroup, setGroups, setColumns, setTasks } =
+export const { selectGroup, setGroups, setColumns, setTasks, dragTask } =
   taskSlice.actions
 
 export default taskSlice.reducer

@@ -1,5 +1,5 @@
 import styles from "./Task.module.scss"
-import { dragTask } from "@/store/task/taskActions"
+import { dragTaskAsync } from "@/store/task/taskActions"
 import { selectCurrentGroup } from "@/store/task/taskSlice"
 import TaskList from "./TaskList/TaskList"
 import { useSelector, useDispatch } from "react-redux"
@@ -42,7 +42,7 @@ function Task() {
         return populatedTask
       })
     })
-    dispatch(dragTask(columns))
+    dispatch(dragTaskAsync(columns))
   }
 
   return (
